@@ -1,0 +1,5 @@
+{
+  "name": "MysterBox",
+  "description": "A local-first, privacy-focused password manager featuring AES-256-GCM encryption, masonry layout, and a modern red/black aesthetic.",
+  "requestFramePermissions": []
+}

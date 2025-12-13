@@ -1,0 +1,66 @@
+{
+  "name": "mysterbox-vault",
+  "productName": "MysterBox",
+  "version": "1.0.0",
+  "description": "A local-first, privacy-focused password manager.",
+  "main": "electron/main.js",
+  "author": "Jamie Tang <https://github.com/JamieJustTang>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build:single": "tsc && vite build --mode single",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "electron:dev": "vite build && electron .",
+    "electron:build": "vite build && electron-builder",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build --bundles dmg"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/react": "^18.2.64",
+    "@types/react-dom": "^18.2.21",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@tauri-apps/cli": "^2.0.0",
+    "autoprefixer": "^10.4.18",
+    "electron": "^29.4.6",
+    "electron-builder": "^24.13.3",
+    "postcss": "^8.4.35",
+    "vite-plugin-singlefile": "^2.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "lucide-react": "^0.344.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.4.2",
+    "vite": "^5.1.5"
+  },
+  "build": {
+    "appId": "com.jamietang.mysterbox",
+    "compression": "maximum",
+    "asar": true,
+    "electronLanguages": [
+      "en",
+      "zh-CN"
+    ],
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json",
+      "!**/*.map",
+      "!**/node_modules/**"
+    ],
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        "dmg"
+      ],
+      "icon": "public/icon.icns"
+    },
+    "directories": {
+      "output": "release"
+    },
+    "extends": null
+  }
+}

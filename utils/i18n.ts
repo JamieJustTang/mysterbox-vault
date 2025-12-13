@@ -1,0 +1,182 @@
+export const translations = {
+  en: {
+    // VaultHandler
+    appName: "MysterBox",
+    appDesc: "Local-first, encrypted vault.",
+    createNewVault: "Create New Vault",
+    openExistingVault: "Open Existing Vault",
+    securityInfo: "AES-256-GCM Encryption • Zero Knowledge • Local Only",
+    vaultName: "Vault Name",
+    masterPassword: "Master Password",
+    passwordWarning: "Warning: If you lose this password, your data is lost forever.",
+    back: "Back",
+    createVaultAction: "Create Vault",
+    unlock: "Unlock",
+    selectVaultFile: "Select Vault File (.vlt)",
+    dragDrop: "Click or Drag file here",
+    dropHere: "Drop file here",
+    fileTooLarge: "File is too large (>100MB).",
+    unlockFailed: "Unlock failed",
+    troubleUploading: "Trouble uploading? Browse standard files",
+    langHint: "Switch Language / 切换语言",
+    
+    // Dashboard
+    searchPlaceholder: "Search vault...",
+    switchTimeline: "Switch to Timeline View",
+    switchGrid: "Switch to Grid View",
+    saveVault: "Save Vault",
+    lockVault: "Lock Vault",
+    new: "New",
+    recent: "Recent",
+    freq: "Freq",
+    noTags: "No tags",
+    filterTags: "Filter Tags",
+    noCardsFound: "No cards found.",
+    
+    // CardModal
+    editCard: "Edit Card",
+    newCard: "New Card",
+    targetName: "Target Name *",
+    targetNamePlaceholder: "e.g. Google Account",
+    username: "Username",
+    usernamePlaceholder: "email@example.com",
+    password: "Password",
+    tags: "Tags",
+    newTagName: "New Tag Name",
+    newTag: "New Tag",
+    noTagsCreated: "No tags created yet.",
+    customFields: "Custom Fields",
+    customFieldsDesc: "Add extra account details like security questions, PINs, or backup codes.",
+    fieldNamePlaceholder: "Field Name (e.g. Security Question)",
+    valuePlaceholder: "Value",
+    addCustomField: "Add Custom Field",
+    notes: "Notes",
+    notesPlaceholder: "Additional details...",
+    created: "Created",
+    modified: "Modified",
+    lastAccessed: "Recent",
+    usageCount: "Freq",
+    delete: "Delete",
+    cancel: "Cancel",
+    saveCard: "Save Card",
+    
+    // ExitModal
+    saveChanges: "Save changes?",
+    exitConfirmExisting: "This vault was opened from a local file. Do you want to overwrite it with your changes?",
+    exitConfirmNew: "This is a new vault. Please select a location to save your encrypted file.",
+    exitMessage: "You are about to exit",
+    saveOverwrite: "Save & Overwrite",
+    saveCopyExit: "Save Copy As... & Exit",
+    saveFileExit: "Save to File & Exit",
+    discardExit: "Discard Changes & Exit",
+    
+    // TagManager
+    manageTags: "Manage Tags",
+    createNewTag: "Create New Tag",
+    createTagPlaceholder: "Tag Name (Press Enter to Add)",
+    addTagHelp: "Add a tag above to get started.",
+    noTagsCreatedYet: "No tags created yet.",
+    
+    // FilterModal
+    filterByTags: "Filter by Tags",
+    noTagsAvailable: "No tags available. Create some in the dashboard first.",
+    clearSelection: "Clear Selection",
+    done: "Done",
+    
+    // TiltCard
+    noDescription: "No description",
+    
+    // General
+    loading: "Loading...",
+  },
+  zh: {
+    // VaultHandler
+    appName: "MysterBox",
+    appDesc: "本地优先，加密存储。",
+    createNewVault: "创建新密码库",
+    openExistingVault: "打开现有密码库",
+    securityInfo: "AES-256-GCM 加密 • 零知识 • 仅限本地",
+    vaultName: "密码库名称",
+    masterPassword: "主密码",
+    passwordWarning: "警告：如果您丢失此密码，您的数据将永久丢失。",
+    back: "返回",
+    createVaultAction: "创建密码库",
+    unlock: "解锁",
+    selectVaultFile: "选择密码库文件 (.vlt)",
+    dragDrop: "点击或拖拽文件至此",
+    dropHere: "释放文件",
+    fileTooLarge: "文件过大 (>100MB)。",
+    unlockFailed: "解锁失败",
+    troubleUploading: "上传有问题？浏览标准文件",
+    langHint: "Switch Language / 切换语言",
+
+    // Dashboard
+    searchPlaceholder: "搜索密码库...",
+    switchTimeline: "切换到时间轴视图",
+    switchGrid: "切换到网格视图",
+    saveVault: "保存密码库",
+    lockVault: "锁定密码库",
+    new: "新建",
+    recent: "最近",
+    freq: "频率",
+    noTags: "无标签",
+    filterTags: "筛选标签",
+    noCardsFound: "未找到卡片。",
+
+    // CardModal
+    editCard: "编辑卡片",
+    newCard: "新建卡片",
+    targetName: "目标名称 *",
+    targetNamePlaceholder: "例如：谷歌账号",
+    username: "用户名",
+    usernamePlaceholder: "email@example.com",
+    password: "密码",
+    tags: "标签",
+    newTagName: "新标签名称",
+    newTag: "新标签",
+    noTagsCreated: "尚未创建标签。",
+    customFields: "自定义字段",
+    customFieldsDesc: "添加额外的账户详细信息，如安全问题、PIN 码或备份代码。",
+    fieldNamePlaceholder: "字段名称 (例如：安全问题)",
+    valuePlaceholder: "值",
+    addCustomField: "添加自定义字段",
+    notes: "备注",
+    notesPlaceholder: "更多详细信息...",
+    created: "创建于",
+    modified: "修改于",
+    lastAccessed: "最近",
+    usageCount: "频率",
+    delete: "删除",
+    cancel: "取消",
+    saveCard: "保存卡片",
+
+    // ExitModal
+    saveChanges: "保存更改？",
+    exitConfirmExisting: "此密码库是从本地文件打开的。您要覆盖更改吗？",
+    exitConfirmNew: "这是一个新密码库。请选择保存加密文件的位置。",
+    exitMessage: "您即将退出",
+    saveOverwrite: "保存并覆盖",
+    saveCopyExit: "另存为副本并退出",
+    saveFileExit: "保存文件并退出",
+    discardExit: "放弃更改并退出",
+
+    // TagManager
+    manageTags: "管理标签",
+    createNewTag: "创建新标签",
+    createTagPlaceholder: "标签名称 (按回车添加)",
+    addTagHelp: "在上方添加标签以开始使用。",
+    noTagsCreatedYet: "尚未创建标签。",
+
+    // FilterModal
+    filterByTags: "按标签筛选",
+    noTagsAvailable: "无可用标签。请先在仪表板中创建。",
+    clearSelection: "清除选择",
+    done: "完成",
+    
+    // TiltCard
+    noDescription: "无描述",
+
+    // General
+    loading: "加载中...",
+  }
+};
