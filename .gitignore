@@ -22,3 +22,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+node_modules/
+dist/
+release/
+src-tauri/target/
+src-tauri/gen/
+*.log
+node_modules/
+dist/
+release/
+src-tauri/target/
+src-tauri/gen/
+*.log
