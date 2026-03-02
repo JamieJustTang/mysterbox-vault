@@ -1,0 +1,5 @@
+{
+  "name": "MysterBox",
+  "description": "A local-first, zero-knowledge password manager running in the browser.",
+  "requestFramePermissions": []
+}

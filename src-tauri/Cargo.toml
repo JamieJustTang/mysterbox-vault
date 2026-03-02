@@ -1,0 +1,27 @@
+[package]
+name = "mysterbox"
+version = "2.0.0"
+description = "MysterBox - Local-first password manager"
+edition = "2021"
+
+[lib]
+name = "mysterbox"
+crate-type = ["staticlib", "cdylib", "rlib"]
+path = "src/lib.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = []
+
+[profile.release]
+codegen-units = 1
+opt-level = "s"
+lto = true
+panic = "abort"
+strip = "symbols"
