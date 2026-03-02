@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { VaultData, VaultCard, Tag, Theme, Language, SortMode } from '../types';
 import { encryptVault, decryptVault, decryptVaultFromFile } from '../services/crypto';
-import { saveFile } from '../services/fileSystem';
+import { saveFile, saveToPath } from '../services/fileSystem';
 import { v4 as uuidv4 } from 'uuid';
 
 interface VaultContextType {
@@ -11,11 +11,12 @@ interface VaultContextType {
   language: Language;
   sortMode: SortMode;
   fileHandle: FileSystemFileHandle | null;
+  filePath: string | null;
   isSaving: boolean;
   setTheme: (theme: Theme) => void;
   setLanguage: (lang: Language) => void;
   setSortMode: (mode: SortMode) => void;
-  unlockVault: (password: string, fileContent: string, handle?: FileSystemFileHandle, file?: File) => Promise<boolean>;
+  unlockVault: (password: string, fileContent: string, handle?: FileSystemFileHandle, file?: File, filePath?: string) => Promise<boolean>;
   createVault: (password: string, name: string) => Promise<void>;
   lockVault: () => void;
   saveVault: () => Promise<boolean>;
@@ -38,6 +39,7 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [language, setLanguage] = useState<Language>('en');
   const [sortMode, setSortMode] = useState<SortMode>('recent');
   const [fileHandle, setFileHandle] = useState<FileSystemFileHandle | null>(null);
+  const [filePath, setFilePath] = useState<string | null>(null); // Tauri: absolute path
   const [isSaving, setIsSaving] = useState(false);
   const autoSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const vaultVersionRef = useRef(0);
@@ -69,7 +71,13 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     localStorage.setItem('mysterbox_sort', sortMode);
   }, [sortMode]);
 
-  const unlockVault = async (password: string, fileContent: string, handle?: FileSystemFileHandle, file?: File) => {
+  const unlockVault = async (
+    password: string,
+    fileContent: string,
+    handle?: FileSystemFileHandle,
+    file?: File,
+    path?: string
+  ) => {
     try {
       // Prefer binary-safe decryption via File object (fixes v1 binary format corruption)
       const decryptedVault = file
@@ -99,6 +107,7 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setVault(decryptedVault);
       setCurrentPassword(password);
       if (handle) setFileHandle(handle);
+      if (path) setFilePath(path);
       return true;
     } catch (e) {
       console.error(e);
@@ -125,9 +134,10 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setVault(null);
     setCurrentPassword(null);
     setFileHandle(null);
+    setFilePath(null);
   };
 
-  // Save to current file (auto-save target)
+  // Save to current file (auto-save: overwrite in place)
   const saveVault = useCallback(async () => {
     if (!vault || !currentPassword) return false;
     setIsSaving(true);
@@ -135,7 +145,12 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const updatedVault = { ...vault, meta: { ...vault.meta, updatedAt: Date.now() } };
       const encrypted = await encryptVault(updatedVault, currentPassword);
 
-      // If we have a file handle, overwrite directly
+      // Tauri path-based overwrite (highest priority)
+      if (filePath) {
+        return await saveToPath(encrypted, filePath);
+      }
+
+      // Browser: FileSystemFileHandle overwrite
       if (fileHandle) {
         try {
           const writable = await fileHandle.createWritable();
@@ -147,30 +162,17 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
       }
 
-      // No handle (new vault) — ask user to pick location, then store handle
-      try {
-        if ((window as any).showSaveFilePicker) {
-          const handle = await (window as any).showSaveFilePicker({
-            suggestedName: `${vault.meta.name.replace(/\s+/g, '_')}.vlt`,
-            types: [{ description: 'MysterBox Vault', accept: { 'application/octet-stream': ['.vlt'] } }],
-          });
-          const writable = await handle.createWritable();
-          await writable.write(encrypted);
-          await writable.close();
-          setFileHandle(handle); // Remember for future auto-saves
-          return true;
-        }
-      } catch (e: any) {
-        if (e.name === 'AbortError') return false;
-        console.warn('showSaveFilePicker failed', e);
+      // No file known yet — ask user to pick a location
+      const suggestedName = `${vault.meta.name.replace(/\s+/g, '_')}.vlt`;
+      const result = await saveFile(encrypted, suggestedName);
+      if (result.success && result.filePath) {
+        setFilePath(result.filePath); // Remember for future auto-saves (Tauri)
       }
-
-      // Ultimate fallback: download
-      return await saveFile(encrypted, `${vault.meta.name.replace(/\s+/g, '_')}.vlt`);
+      return result.success;
     } finally {
       setIsSaving(false);
     }
-  }, [vault, currentPassword, fileHandle]);
+  }, [vault, currentPassword, fileHandle, filePath]);
 
   // Save As / Export — always prompt for new location
   const saveVaultAs = useCallback(async () => {
@@ -179,7 +181,14 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     try {
       const updatedVault = { ...vault, meta: { ...vault.meta, updatedAt: Date.now() } };
       const encrypted = await encryptVault(updatedVault, currentPassword);
-      return await saveFile(encrypted, `${vault.meta.name.replace(/\s+/g, '_')}.vlt`);
+      const suggestedName = `${vault.meta.name.replace(/\s+/g, '_')}.vlt`;
+      const result = await saveFile(encrypted, suggestedName);
+      if (result.success && result.filePath) {
+        // Update saved path so future auto-saves go to the new location
+        setFilePath(result.filePath);
+        setFileHandle(null);
+      }
+      return result.success;
     } finally {
       setIsSaving(false);
     }
@@ -239,7 +248,7 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setVault({ ...vault, cards: vault.cards.filter((c) => c.id !== id) });
   };
 
-  // --- Tag Operations (restored from v1) ---
+  // --- Tag Operations ---
 
   const addTag = (tag: Tag) => {
     if (!vault) return;
@@ -251,14 +260,12 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const updatedTags = vault.tags.map((t) =>
       t.id === updatedTag.id ? updatedTag : t
     );
-    // Also clean up card references if tag was deleted
     setVault({ ...vault, tags: updatedTags });
   };
 
   const deleteTag = (id: string) => {
     if (!vault) return;
     const updatedTags = vault.tags.filter((t) => t.id !== id);
-    // Remove tag from all cards
     const updatedCards = vault.cards.map((card) => ({
       ...card,
       tags: card.tags.filter((tagId) => tagId !== id),
@@ -275,6 +282,7 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         language,
         sortMode,
         fileHandle,
+        filePath,
         isSaving,
         setTheme,
         setLanguage,

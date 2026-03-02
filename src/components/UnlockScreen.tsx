@@ -13,6 +13,7 @@ export const UnlockScreen: React.FC = () => {
   const [fileContent, setFileContent] = useState<string | null>(null);
   const [fileHandle, setFileHandle] = useState<FileSystemFileHandle | null>(null);
   const [fileObj, setFileObj] = useState<File | null>(null);
+  const [filePath, setFilePath] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,6 +24,7 @@ export const UnlockScreen: React.FC = () => {
       setFileContent(result.content);
       if (result.handle) setFileHandle(result.handle);
       if (result.file) setFileObj(result.file);
+      if (result.filePath) setFilePath(result.filePath);
     }
   };
 
@@ -32,7 +34,7 @@ export const UnlockScreen: React.FC = () => {
     setIsLoading(true);
     setError(null);
     setTimeout(async () => {
-      const success = await unlockVault(password, fileContent, fileHandle ?? undefined, fileObj ?? undefined);
+      const success = await unlockVault(password, fileContent, fileHandle ?? undefined, fileObj ?? undefined, filePath ?? undefined);
       setIsLoading(false);
       if (!success) setError(t.error_wrong_password);
     }, 100);
