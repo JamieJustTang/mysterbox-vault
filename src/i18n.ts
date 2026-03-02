@@ -97,6 +97,8 @@ export const translations = {
     copy: 'Copy',
     copied: 'Copied!',
     archive: 'Archive',
+    unarchive: 'Unarchive',
+    confirmArchive: 'Click again to confirm',
     saveChangesBtn: 'Save Changes',
     createItem: 'Create Item',
 
@@ -313,6 +315,8 @@ export const translations = {
     copy: '复制',
     copied: '已复制!',
     archive: '归档',
+    unarchive: '取消归档',
+    confirmArchive: '再次点击以确认',
     saveChangesBtn: '保存更改',
     createItem: '创建条目',
 

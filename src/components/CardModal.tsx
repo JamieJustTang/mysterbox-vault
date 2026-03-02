@@ -48,6 +48,7 @@ export const CardModal: React.FC<CardModalProps> = ({ isOpen, onClose, card }) =
     const [newTagName, setNewTagName] = useState('');
     const [newTagColor, setNewTagColor] = useState('#6366f1');
     const [copied, setCopied] = useState(false);
+    const [confirmingArchive, setConfirmingArchive] = useState(false);
 
     useEffect(() => {
         setFormData(card
@@ -59,6 +60,7 @@ export const CardModal: React.FC<CardModalProps> = ({ isOpen, onClose, card }) =
         setNewTagName('');
         setShowPassword(false);
         setCopied(false);
+        setConfirmingArchive(false);
     }, [card, isOpen]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -74,10 +76,21 @@ export const CardModal: React.FC<CardModalProps> = ({ isOpen, onClose, card }) =
     };
 
     const handleArchive = () => {
-        if (card && confirm(t.archiveConfirm)) {
-            updateCard({ ...card, archived: true });
-            onClose();
+        if (!card) return;
+        if (!confirmingArchive) {
+            setConfirmingArchive(true);
+            setTimeout(() => setConfirmingArchive(false), 3000);
+            return;
         }
+        // Use formData to preserve any in-progress edits
+        updateCard({ ...formData, id: card.id, archived: true, updatedAt: Date.now() } as VaultCard);
+        onClose();
+    };
+
+    const handleUnarchive = () => {
+        if (!card) return;
+        updateCard({ ...formData, id: card.id, archived: false, updatedAt: Date.now() } as VaultCard);
+        onClose();
     };
 
     const generatePassword = () => {
@@ -507,13 +520,24 @@ export const CardModal: React.FC<CardModalProps> = ({ isOpen, onClose, card }) =
 
                 {/* ── Footer ── */}
                 <div className="px-5 py-3 border-t border-gray-100 bg-gray-50/60 flex items-center justify-between gap-3 shrink-0 rounded-b-2xl">
-                    {/* Archive (edit only) */}
+                    {/* Archive / Unarchive (edit only) */}
                     {card ? (
-                        <button type="button" onClick={handleArchive}
-                            className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors">
-                            <span className="material-symbols-outlined text-[16px]">archive</span>
-                            {t.archive}
-                        </button>
+                        card.archived ? (
+                            <button type="button" onClick={handleUnarchive}
+                                className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-xl transition-colors">
+                                <span className="material-symbols-outlined text-[16px]">unarchive</span>
+                                {t.unarchive || 'Unarchive'}
+                            </button>
+                        ) : (
+                            <button type="button" onClick={handleArchive}
+                                className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl transition-all ${confirmingArchive
+                                        ? 'text-white bg-red-500 hover:bg-red-600 shadow-sm animate-pulse'
+                                        : 'text-gray-500 hover:text-red-500 hover:bg-red-50'
+                                    }`}>
+                                <span className="material-symbols-outlined text-[16px]">{confirmingArchive ? 'warning' : 'archive'}</span>
+                                {confirmingArchive ? (t.confirmArchive || 'Click again to confirm') : t.archive}
+                            </button>
+                        )
                     ) : <span />}
 
                     <div className="flex items-center gap-2">

@@ -75,7 +75,6 @@ export const Dashboard: React.FC = () => {
     }, [vault, searchQuery, selectedTag, activeFilter, sortMode]);
 
     const handleEdit = (card: VaultCard) => {
-        if (activeFilter === 'archive') return; // Cannot edit archived cards
         setEditingCard(card);
         setIsModalOpen(true);
     };
