@@ -174,6 +174,12 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, [vault, currentPassword, fileHandle, filePath]);
 
+  // Keep a ref to the latest saveVault so the auto-save timer never calls a stale closure
+  const saveVaultRef = useRef(saveVault);
+  useEffect(() => {
+    saveVaultRef.current = saveVault;
+  }, [saveVault]);
+
   // Save As / Export — always prompt for new location
   const saveVaultAs = useCallback(async () => {
     if (!vault || !currentPassword) return false;
@@ -203,13 +209,13 @@ export const VaultProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
     autoSaveTimerRef.current = setTimeout(() => {
-      saveVault();
+      saveVaultRef.current();
     }, 1500);
 
     return () => {
       if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
     };
-  }, [vault]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [vault, currentPassword]);
 
   // --- Card Operations ---
 
