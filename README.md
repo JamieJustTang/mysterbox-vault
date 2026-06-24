@@ -10,12 +10,24 @@
 [![Version](https://img.shields.io/badge/Version-2.0.0-orange.svg)](#)
 [![Platform](https://img.shields.io/badge/Platform-macOS%20%7C%20Web-blue.svg)](#)
 [![Encryption](https://img.shields.io/badge/Encryption-AES--256--GCM-green.svg)](#)
+[![Download](https://img.shields.io/badge/Download-macOS%20.dmg-EC5A2A.svg)](https://github.com/JamieJustTang/mysterbox-vault/releases/tag/MacOS)
 
 **MysterBox** is a privacy-first, offline password manager that keeps your credentials safe with military-grade encryption — entirely on your device. No accounts, no cloud, no tracking.
 
-[Features](#-features) · [Screenshots](#-screenshots) · [Getting Started](#-getting-started) · [Architecture](#-architecture) · [License](#-license)
+[Download](#-download) · [Features](#-features) · [Screenshots](#-screenshots) · [Getting Started](#-getting-started) · [Architecture](#-architecture) · [License](#-license)
 
 </div>
+
+---
+
+## ⬇️ Download
+
+Grab the latest signed-free macOS build (Apple Silicon) from the
+**[Releases page »](https://github.com/JamieJustTang/mysterbox-vault/releases/tag/MacOS)**:
+
+- **[MysterBox_2.0.0_aarch64.dmg](https://github.com/JamieJustTang/mysterbox-vault/releases/tag/MacOS)** — drag into `Applications` and launch.
+
+> First launch: the app is not notarized, so right-click the app → **Open** to bypass Gatekeeper once.
 
 ---
 
@@ -127,7 +139,7 @@ Open `http://localhost:14131` in your browser.
 ### Build Desktop App (macOS)
 
 ```bash
-npm run tauri:build
+npx @tauri-apps/cli build --bundles dmg
 ```
 
 The `.dmg` installer will be generated at:
