@@ -53,7 +53,13 @@ async function openFileTauri(): Promise<OpenFileResult | null> {
 
     const { readFile } = await getTauriFs();
     const bytes = await readFile(selected);
-    const content = new TextDecoder().decode(bytes);
+    // Binary-safe (latin1) decode: map each byte 1:1 to a char code (0-255).
+    // Do NOT use TextDecoder() here — UTF-8 (and even the 'latin1'/windows-1252
+    // label) is lossy for the encrypted MBOX vault bytes and corrupts the
+    // ciphertext, so decrypt then fails with "wrong password / corrupted file".
+    // This round-trips exactly with decryptVault()'s charCodeAt() re-encode.
+    let content = '';
+    for (let i = 0; i < bytes.length; i++) content += String.fromCharCode(bytes[i]);
     return { content, filePath: selected };
   } catch (err: any) {
     if (err?.toString().includes('cancelled') || err?.toString().includes('AbortError')) return null;
