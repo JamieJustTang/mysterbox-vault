@@ -12,9 +12,11 @@
 [![Encryption](https://img.shields.io/badge/Encryption-AES--256--GCM-green.svg)](#)
 [![Download](https://img.shields.io/badge/Download-macOS%20.dmg-EC5A2A.svg)](https://github.com/JamieJustTang/mysterbox-vault/releases/tag/MacOS)
 
+**English** · [中文](README.zh-CN.md)
+
 **MysterBox** is a privacy-first, offline password manager that keeps your credentials safe with military-grade encryption — entirely on your device. No accounts, no cloud, no tracking.
 
-[Download](#-download) · [Features](#-features) · [Screenshots](#-screenshots) · [Getting Started](#-getting-started) · [Architecture](#-architecture) · [License](#-license)
+[Download](#-download) · [Highlights](#-highlights) · [Features](#-features) · [Screenshots](#-screenshots) · [Getting Started](#-getting-started) · [Architecture](#-architecture)
 
 </div>
 
@@ -22,12 +24,23 @@
 
 ## ⬇️ Download
 
-Grab the latest signed-free macOS build (Apple Silicon) from the
+Grab the latest macOS build (Apple Silicon) from the
 **[Releases page »](https://github.com/JamieJustTang/mysterbox-vault/releases/tag/MacOS)**:
 
 - **[MysterBox_2.0.0_aarch64.dmg](https://github.com/JamieJustTang/mysterbox-vault/releases/tag/MacOS)** — drag into `Applications` and launch.
 
 > First launch: the app is not notarized, so right-click the app → **Open** to bypass Gatekeeper once.
+
+---
+
+## ⭐ Highlights
+
+| | |
+|---|---|
+| 🔑 **Built-in Password Generator** | Spin up strong, unguessable passwords in one click — tune length (8–64) and character sets, see a live strength meter, and recall the last ones from history. |
+| 🏷️ **Tag-based Organization** | Group accounts with color-coded tags (Personal, API Key, Work…), filter the vault by a single click, and star your most-used logins as Favorites. |
+| 🩺 **Password Health Score** | A live vault-health ring scores your overall security and flags weak, reused, aging, or incomplete entries — each with a one-click **Fix**. |
+| 🔒 **Zero-Knowledge & Offline** | AES-256-GCM + PBKDF2 (600k iterations). Your master password and data never leave the device — no cloud, no account, no telemetry. |
 
 ---
 
@@ -40,26 +53,26 @@ Grab the latest signed-free macOS build (Apple Silicon) from the
 - **Auto-lock** on exit to prevent unauthorized access
 
 ### 🗂️ Smart Vault Management
-- **Card & Table views** — switch between visual card grid and compact table layout
-- **Tag system** with custom colors — organize entries by category (Personal, API Key, Work, etc.)
-- **Favorites & Archive** — quick-access starred items and soft-delete support
+- **Card & Table views** — switch between a visual card grid and a compact table layout
+- **Tag system** with custom colors — organize entries by category (Personal, API Key, Work, etc.) and filter the vault by tag in one click
+- **Favorites & Archive** — quick-access starred items and reversible soft-delete
 - **Smart sorting** — by recent usage, frequency, or alphabetical order
-- **Instant search** — filter vault entries in real-time
-- **Auto-save** — changes are automatically saved to the original file (1.5s debounce)
+- **Instant search** — filter vault entries in real time
+- **Auto-save** — every change is written back to the original `.vlt` file automatically (1.5s debounce)
 
 ### 🔑 Password Tools
-- **Password Generator** — create strong passwords with customizable length (8–64 chars), uppercase/lowercase, numbers, and symbols, with strength indicator and generation history
-- **Security Audit** — analyze all vault entries for weak passwords, reused passwords, password age > 180 days, and incomplete entries, with a health score and one-click fix
+- **Password Generator** — create strong passwords with customizable length (8–64 chars) and character sets (uppercase / lowercase / numbers / symbols), with a live strength indicator, one-click copy/regenerate, and a recent-history panel
+- **Security Audit** — scan every entry for **weak passwords**, **reused passwords**, **age > 180 days**, and **incomplete records**, summarized as a **health score** with per-issue one-click **Fix** navigation
 
 ### 🎨 Modern UI/UX
 - **Clean glassmorphism design** with smooth animations
-- **Responsive layout** with sidebar navigation
-- **Favicon auto-fetch** — automatically displays website icons for each entry
-- **Custom fields** — store any extra data (security questions, PINs, backup codes, etc.)
-- **Bilingual** — full English / 中文 interface support
+- **Per-entry detail editor** — name, username, password (show / copy / generate + strength bar), website (with quick-open), tags, notes, and unlimited **custom fields**
+- **Favicon auto-fetch** — automatically displays each site's icon
+- **Usage metadata** — created/modified dates and a usage counter per entry
+- **Bilingual** — full English / 中文 interface
 
 ### 📦 Cross-Platform
-- **Tauri desktop app** — native macOS `.dmg` packaged distribution
+- **Tauri desktop app** — native macOS `.dmg` distribution
 - **Web app** — also runs in any modern browser
 - **Electron support** — optional Electron build available
 
@@ -67,53 +80,53 @@ Grab the latest signed-free macOS build (Apple Silicon) from the
 
 ## 📸 Screenshots
 
-### Landing Page
-> Unlock an existing vault or create a new one — simple and secure entry point.
+### 🔓 Landing — Unlock or Create
+> A simple, secure entry point: open an existing `.vlt` vault with your master password, or create a new one. Everything stays local.
 
 <div align="center">
 <img src="screenshot/landing page.png" alt="Landing Page" width="700" />
 </div>
 
-### Dashboard — Card Layout
-> Visual card grid with tag badges, favorites, and sorting options. Sidebar shows vault location, tag filters, tools, and vault health score.
+### 🗃️ Dashboard — Card Layout · Tags, Favorites & Sorting
+> Visual card grid with site favicons, color-coded **tag badges**, and one-click copy. The sidebar surfaces the vault location with its live auto-save status, **tag filters** (Personal, API Key…), tools, and the **vault-health widget** showing your score and pending issues at a glance.
 
 <div align="center">
 <img src="screenshot/main page(card layout)-tags,favorites,sort-bys.png" alt="Dashboard Card Layout" width="800" />
 </div>
 
-### Dashboard — Table Layout
-> Compact table view for quick scanning — see name, username, URL, and copy passwords at a glance.
+### 📋 Dashboard — Table Layout
+> A compact table view for quick scanning — name, username, and URL side by side, with copy and actions inline. Toggle between card and table at any time.
 
 <div align="center">
 <img src="screenshot/main page(table layout).png" alt="Dashboard Table Layout" width="800" />
 </div>
 
-### Card Editor — Basic Properties
-> Edit entry name, username, password (with strength bar), website URL, tags, notes, and custom fields. Supports password visibility toggle, one-click copy, and random generation.
-
-<div align="center">
-<img src="screenshot/card edit(basic properties).png" alt="Card Edit - Basic" width="500" />
-</div>
-
-### Card Editor — Custom Fields
-> Add unlimited custom fields to any entry — perfect for API quotas, security answers, backup codes, or any structured metadata.
-
-<div align="center">
-<img src="screenshot/card edit(custom fields).png" alt="Card Edit - Custom Fields" width="500" />
-</div>
-
-### Password Generator
-> Generate strong passwords instantly with customizable rules. Visual strength indicator and recent history panel for easy recall.
+### 🔑 Password Generator
+> Generate strong passwords instantly. Drag the **length slider** (8–64), toggle uppercase / lowercase / numbers / symbols, and watch the **strength meter** update live. Copy or regenerate in one click, and pull from the **recent-history** panel.
 
 <div align="center">
 <img src="screenshot/feature-random code generator.png" alt="Password Generator" width="800" />
 </div>
 
-### Security Audit
-> Comprehensive security analysis with health score ring chart. Detects weak passwords, reused credentials, aged passwords (>180 days), and incomplete entries. One-click "Fix" navigation.
+### 🩺 Security Audit — Password Health Score
+> A comprehensive health check with a **score ring** (e.g. 65 / Fair). Breakdown cards count **weak passwords**, **reused groups**, **passwords older than 180 days**, and **incomplete entries**. The vulnerable-items list shows each risky login with its strength meter and a one-click **Fix**.
 
 <div align="center">
 <img src="screenshot/feature-security audit.png" alt="Security Audit" width="800" />
+</div>
+
+### ✏️ Card Editor — Basic Properties
+> Edit name, username, password (with show/copy/generate and a strength bar), website (with quick-open), **tags**, notes, and custom fields — plus created/modified timestamps and a usage counter. Star an entry or archive it right from the editor.
+
+<div align="center">
+<img src="screenshot/card edit(basic properties).png" alt="Card Edit - Basic" width="500" />
+</div>
+
+### 🧩 Card Editor — Custom Fields
+> Add unlimited **custom fields** to any entry — perfect for API quotas, security answers, backup codes, recovery emails, or any structured metadata.
+
+<div align="center">
+<img src="screenshot/card edit(custom fields).png" alt="Card Edit - Custom Fields" width="500" />
 </div>
 
 ---
